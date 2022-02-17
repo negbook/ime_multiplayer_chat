@@ -4,7 +4,7 @@ RegisterNUICallback("update", function(data, cb)
         if(fn) then 
 			local action = {}
 			fn(action)
-			if action["on".."Update"] then action["on".."Update"](data.string,namespace) end 
+			if action["on".."Update"] then action["on".."Update"](data.string,data.length,namespace) end 
         end 
     end 
     cb()
@@ -76,12 +76,13 @@ RegisterNetEvent('RequestInput')
 AddEventHandler('RequestInput', RequestInput)
 --]]
 local nowChars = 0
-function AddTypingText(text)
+function AddTypingText(text,length)
 	if nowChars > 50 then return end 
     BeginScaleformMovieMethod(multiplayer_chat_scaleformhandle, "ADD_TEXT");
     BeginTextCommandScaleformString( "STRING");
     AddTextComponentSubstringPlayerName( text);
-	nowChars = nowChars + #text
+	--print(length) js char length for chinese etc...
+	nowChars = nowChars + length
     EndTextCommandScaleformString();
     EndScaleformMovieMethod();
 end 
@@ -119,9 +120,9 @@ CreateThread(function()
 							end 
 						end)
 					end 
-					input.onUpdate = function(text) 
+					input.onUpdate = function(text,length) 
 						if (IsMultiplayerChatActive()) then 
-							AddTypingText(text)
+							AddTypingText(text,length)
 						end 
 					end 
 					input.onClear = function() 

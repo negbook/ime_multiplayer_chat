@@ -104,7 +104,11 @@ new Vue({
 	watch:  {
 		inputedText: function (txt) { 
 			if(this.active) { 
-				$.post("https://ime_multiplayer_chat/update", JSON.stringify({string: txt.substr(1,txt.length - 1)}));
+				$.post("https://ime_multiplayer_chat/update", 
+				JSON.stringify({
+					length: txt.length-1,
+					string: txt.substr(1,txt.length)
+				}));
 				this.updateText(txt.substr(1,txt.length));
 			};
 		}
