@@ -75,35 +75,34 @@ end
 RegisterNetEvent('RequestInput')
 AddEventHandler('RequestInput', RequestInput)
 --]]
-function AddTypingText( text)
+local nowChars = 0
+function AddTypingText(text)
+	if nowChars > 50 then return end 
     BeginScaleformMovieMethod(multiplayer_chat_scaleformhandle, "ADD_TEXT");
     BeginTextCommandScaleformString( "STRING");
     AddTextComponentSubstringPlayerName( text);
+	nowChars = nowChars + #text
     EndTextCommandScaleformString();
     EndScaleformMovieMethod();
 end 
 function DeleteTypingText( )
     BeginScaleformMovieMethod(multiplayer_chat_scaleformhandle, "DELETE_TEXT");
     EndScaleformMovieMethod();
+	if nowChars > 0 then 
+		nowChars = nowChars - 1
+	end 
 end 
 function ClearTypingText( )
     BeginScaleformMovieMethod(multiplayer_chat_scaleformhandle, "ABORT_TEXT");
     EndScaleformMovieMethod();
+	nowChars = 0
 end 
-function  SetTypingDone( addMessage)
+function SetTypingDone()
     BeginScaleformMovieMethod(multiplayer_chat_scaleformhandle, "SET_TYPING_DONE");
     EndScaleformMovieMethod();
-    if (addMessage) then
-        AddFeedMessage(username, textBuffer);
-    end
-    textBuffer = "";
+	nowChars = 0
 end
-function  AddFeedMessage( name,  message)
-    BeginScaleformMovieMethod(multiplayer_chat_scaleformhandle, "ADD_MESSAGE");
-    ScaleformMovieMethodAddParamTextureNameString( name);
-    ScaleformMovieMethodAddParamTextureNameString( message);
-    EndScaleformMovieMethod();
-end
+
 local ChatActive = false 
 CreateThread(function()
 	while true do Wait(0)
@@ -132,7 +131,7 @@ CreateThread(function()
 						DeleteTypingText()
 					end 
 					input.onEnter = function(text)
-						SetTypingDone(text)
+						SetTypingDone()
 						CloseMultiplayerChat()
 					end 
 					
