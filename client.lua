@@ -50,7 +50,8 @@ RegisterNUICallback("enter", function(data, cb)
 	SetNuiFocus(false, false)
 	
 end)
-RequestInput = function(namespace,cb,x,y)
+RequestMultiplayerChatInput = function(cb,x,y)
+	local namespace = 'MultiplayerChat'
 	SendNUIMessage({
         action    = 'displayInput',
 		debug = false
@@ -70,9 +71,10 @@ RequestInput = function(namespace,cb,x,y)
     end     
 	SetNuiFocus(true, false)
 end
-
+--[[
 RegisterNetEvent('RequestInput')
 AddEventHandler('RequestInput', RequestInput)
+--]]
 function AddTypingText( text)
     BeginScaleformMovieMethod(multiplayer_chat_scaleformhandle, "ADD_TEXT");
     BeginTextCommandScaleformString( "STRING");
@@ -108,7 +110,7 @@ CreateThread(function()
 		if (IsMultiplayerChatActive()) then 
 			if not ChatActive then 
 				ChatActive = true 
-				RequestInput('game_print',function(input)
+				RequestMultiplayerChatInput(function(input)
 					input.onOpen = function() 
 						CreateThread(function()
 							while ChatActive do Wait(50)
