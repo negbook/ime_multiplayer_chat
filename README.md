@@ -1,6 +1,4 @@
-You will trigger enable the chat input box like GTAOL with T key when you   
-```stop chat```       
-in F8 console.   
-But you can't typing any other languages but the english.  
-This script may help you typing texts from other languages into that chat input box.  
-  
+If your server do not loaded the chat script.You basically triggered a chat input box like GTAOL if you pressing T .
+But then at that moment you can not typing any other languages but the english.
+This script may help you typing a text from other languages into that scalefrom box.
+It’s detect if you opened that scaleform box using IsMultiplayerChatActive(), so this is useless when you never triggered a gamebase chat box.
